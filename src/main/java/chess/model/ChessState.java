@@ -10,12 +10,14 @@ public class ChessState implements TwoPhaseMoveState<String> {
     private int kingX, kingY;
     private int knightX, knightY;
     private static final int TARGET_X = 0, TARGET_Y = 6; // Goal position
+    private int moveCount = 0;
 
-    public ChessState(int kingX, int kingY, int knightX, int knightY) {
+    public ChessState(int kingX, int kingY, int knightX, int knightY, int moveCount) {
         this.kingX = kingX;
         this.kingY = kingY;
         this.knightX = knightX;
         this.knightY = knightY;
+        this.moveCount = moveCount;
     }
 
     public int getKingX() {
@@ -40,6 +42,10 @@ public class ChessState implements TwoPhaseMoveState<String> {
 
     public int getGoalY() {
         return TARGET_Y;
+    }
+
+    public int getMoveCount() {
+        return moveCount;
     }
 
     @Override
@@ -115,6 +121,8 @@ public class ChessState implements TwoPhaseMoveState<String> {
                 knightX = newX;
                 knightY = newY;
             }
+
+            moveCount = moveCount + 1;
         }
     }
 
@@ -145,7 +153,7 @@ public class ChessState implements TwoPhaseMoveState<String> {
 
     @Override
     public TwoPhaseMoveState<String> clone() {
-        return new ChessState(kingX, kingY, knightX, knightY);
+        return new ChessState(kingX, kingY, knightX, knightY, moveCount);
     }
 
     @Override
