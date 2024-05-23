@@ -1,6 +1,7 @@
 package chess.control;
 
 import chess.model.ChessState;
+import puzzle.TwoPhaseMoveState;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,6 +15,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.geometry.Insets;
+
+import java.util.Set;
 
 public class ChessController {
 
@@ -77,6 +80,12 @@ public class ChessController {
     }
 
     private void handleSquareClick(int row, int col) {
+        // Logic to select and move pieces
+        if (chessState.isLegalToMoveFrom("King") && row == chessState.getKingX() && col == chessState.getKingY()) {
+            highlightMoves("King");
+        } else if (chessState.isLegalToMoveFrom("Knight") && row == chessState.getKnightX() && col == chessState.getKnightY()) {
+            highlightMoves("Knight");
+        }
     }
 
     private void startGame() {
@@ -86,12 +95,15 @@ public class ChessController {
     }
 
     private void handleLoadGame() {
+        // Implement the load game logic
     }
 
     private void handleSaveGame() {
+        // Implement the save game logic
     }
 
     private void showLeaderboard() {
+        // Implement the leaderboard display logic
     }
 
     private void updateView() {
@@ -113,6 +125,18 @@ public class ChessController {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 squares[i][j].getChildren().clear();
+            }
+        }
+    }
+
+    private void highlightMoves(String piece) {
+        Set<TwoPhaseMoveState.TwoPhaseMove<String>> legalMoves = chessState.getLegalMoves();
+        for (TwoPhaseMoveState.TwoPhaseMove<String> move : legalMoves) {
+            if (move.from().equals(piece)) {
+                String[] parts = move.to().split(" ");
+                int newX = Integer.parseInt(parts[1]);
+                int newY = Integer.parseInt(parts[2]);
+                squares[newX][newY].setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             }
         }
     }
