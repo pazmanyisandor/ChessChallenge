@@ -1,6 +1,8 @@
 package chess;
 
+import chess.control.ChessApplication;
 import chess.model.ChessState;
+import javafx.application.Application;
 import puzzle.solver.BreadthFirstSearch;
 
 public class Main {
@@ -9,5 +11,7 @@ public class Main {
 
         BreadthFirstSearch solver = new BreadthFirstSearch();
         solver.solveAndPrintSolution(initialState);
+
+        Application.launch(ChessApplication.class, args);
     }
 }
