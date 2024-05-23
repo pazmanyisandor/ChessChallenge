@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<SplitPane dividerPositions="0.24369085173501573" prefHeight="624.0" prefWidth="742.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment.control.ChessController">
+<SplitPane dividerPositions="0.24369085173501573" prefHeight="624.0" prefWidth="742.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.control.ChessController">
     <AnchorPane prefHeight="634.0" prefWidth="287.0">
         <Label fx:id="labelUserName" layoutX="14.0" layoutY="14.0" text="Username:" />
         <Button fx:id="buttonStartGame" layoutX="48.0" layoutY="84.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="83.0" text="Start Game" />
