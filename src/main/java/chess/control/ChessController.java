@@ -15,6 +15,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.geometry.Insets;
+import puzzle.TwoPhaseMoveState;
 
 import java.util.Set;
 
@@ -38,6 +39,7 @@ public class ChessController {
     private Label labelMessage;
 
     private ChessState chessState;
+    private String selectedPiece = null;
 
     private final Pane[][] squares = new Pane[8][8];
     private final Image kingImage = new Image(getClass().getResourceAsStream("/king.png"));
@@ -80,11 +82,23 @@ public class ChessController {
     }
 
     private void handleSquareClick(int row, int col) {
-        // Logic to select and move pieces
-        if (chessState.isLegalToMoveFrom("King") && row == chessState.getKingX() && col == chessState.getKingY()) {
-            highlightMoves("King");
-        } else if (chessState.isLegalToMoveFrom("Knight") && row == chessState.getKnightX() && col == chessState.getKnightY()) {
-            highlightMoves("Knight");
+        if (selectedPiece == null) {
+            if (chessState.isLegalToMoveFrom("King") && row == chessState.getKingX() && col == chessState.getKingY()) {
+                selectedPiece = "King";
+                highlightMoves(selectedPiece);
+            } else if (chessState.isLegalToMoveFrom("Knight") && row == chessState.getKnightX() && col == chessState.getKnightY()) {
+                selectedPiece = "Knight";
+                highlightMoves(selectedPiece);
+            }
+        } else {
+            if (squares[row][col].getBackground().getFills().get(0).getFill() == Color.GREEN) {
+                movePiece(selectedPiece, row, col);
+                selectedPiece = null;
+                updateView();
+            } else {
+                selectedPiece = null;
+                clearHighlights();
+            }
         }
     }
 
@@ -130,6 +144,7 @@ public class ChessController {
     }
 
     private void highlightMoves(String piece) {
+        clearHighlights();
         Set<TwoPhaseMoveState.TwoPhaseMove<String>> legalMoves = chessState.getLegalMoves();
         for (TwoPhaseMoveState.TwoPhaseMove<String> move : legalMoves) {
             if (move.from().equals(piece)) {
@@ -139,5 +154,18 @@ public class ChessController {
                 squares[newX][newY].setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             }
         }
+    }
+
+    private void clearHighlights() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                squares[i][j].setBackground(new Background(new BackgroundFill(determineColor(i, j), CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        }
+    }
+
+    private void movePiece(String piece, int newX, int newY) {
+        TwoPhaseMoveState.TwoPhaseMove<String> move = new TwoPhaseMoveState.TwoPhaseMove<>(piece, piece + " " + newX + " " + newY);
+        chessState.makeMove(move);
     }
 }
