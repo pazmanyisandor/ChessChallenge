@@ -14,4 +14,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- Project dependencies -->
+    <dependencies>
+        <!-- Homework project utilities -->
+        <dependency>
+            <groupId>hu.unideb.inf</groupId>
+            <artifactId>homework-project-utils</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Repositories for dependencies -->
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/INBPM0420L/homework-project-utils</url>
+        </repository>
+    </repositories>
+
 </project>
