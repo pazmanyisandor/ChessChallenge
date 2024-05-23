@@ -136,4 +136,9 @@ public class ChessState implements TwoPhaseMoveState<String> {
     public int hashCode() {
         return Objects.hash(kingX, kingY, knightX, knightY);
     }
+
+    @Override
+    public String toString() {
+        return String.format("King: (%d, %d), Knight: (%d, %d)", kingX, kingY, knightX, knightY);
+    }
 }

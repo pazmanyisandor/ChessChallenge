@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6c695584-18ec-41bb-be41-2c3a0e1e1eba" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chess/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chess/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chess/model/ChessState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chess/model/ChessState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +42,7 @@
     "git-widget-placeholder": "master"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.ChessStateTest.testIsAttackedByKnight">
+  <component name="RunManager" selected="JUnit.ChessStateTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="chess.Main" />
       <module name="ChessSoftware" />
@@ -73,6 +71,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ChessStateTest.testGetLegalMoves" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ChessSoftware" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="chess.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="chess.model" />
+      <option name="MAIN_CLASS_NAME" value="chess.model.ChessStateTest" />
+      <option name="METHOD_NAME" value="testGetLegalMoves" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ChessStateTest.testIsAttackedByKnight" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ChessSoftware" />
       <extension name="coverage">
@@ -89,7 +103,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChessStateTest.testIsLegalToMoveFrom" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ChessStateTest.testToString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ChessSoftware" />
       <extension name="coverage">
         <pattern>
@@ -99,7 +113,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="chess.model" />
       <option name="MAIN_CLASS_NAME" value="chess.model.ChessStateTest" />
-      <option name="METHOD_NAME" value="testIsLegalToMoveFrom" />
+      <option name="METHOD_NAME" value="testToString" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -107,10 +121,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ChessStateTest.testIsAttackedByKnight" />
         <item itemvalue="JUnit.ChessStateTest" />
+        <item itemvalue="JUnit.ChessStateTest.testGetLegalMoves" />
+        <item itemvalue="JUnit.ChessStateTest.testToString" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.ChessStateTest.testIsLegalToMoveFrom" />
+        <item itemvalue="JUnit.ChessStateTest.testIsAttackedByKnight" />
       </list>
     </recent_temporary>
   </component>
