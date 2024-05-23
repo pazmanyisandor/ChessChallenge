@@ -18,6 +18,30 @@ public class ChessState implements TwoPhaseMoveState<String> {
         this.knightY = knightY;
     }
 
+    public int getKingX() {
+        return kingX;
+    }
+
+    public int getKingY() {
+        return kingY;
+    }
+
+    public int getKnightX() {
+        return knightX;
+    }
+
+    public int getKnightY() {
+        return knightY;
+    }
+
+    public int getGoalX() {
+        return TARGET_X;
+    }
+
+    public int getGoalY() {
+        return TARGET_Y;
+    }
+
     @Override
     public boolean isLegalToMoveFrom(String piece) {
         if (piece.equals("King")) {
