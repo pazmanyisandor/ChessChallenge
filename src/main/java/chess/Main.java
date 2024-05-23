@@ -8,7 +8,6 @@ public class Main {
         ChessState initialState = new ChessState(2, 1, 2, 2);
 
         BreadthFirstSearch solver = new BreadthFirstSearch();
-
         solver.solveAndPrintSolution(initialState);
     }
 }
