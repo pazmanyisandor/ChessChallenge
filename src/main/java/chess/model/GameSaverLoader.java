@@ -19,6 +19,10 @@ import java.util.List;
  * This class uses the Gson library for JSON serialization and deserialization.
  */
 public class GameSaverLoader {
+    /**
+     * The file path where the game state will be saved to and loaded from.
+     * The default path is "gameState.json".
+     */
     public static String FILE_PATH = "gameState.json";
     private static final Gson gson = new Gson();
 
