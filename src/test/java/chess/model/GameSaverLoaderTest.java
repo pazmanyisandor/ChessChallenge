@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,10 +55,16 @@ public class GameSaverLoaderTest {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        Files.write(filePath, json.getBytes());
 
+        // Use OutputStream to write the JSON data to the file
+        try (OutputStream outputStream = Files.newOutputStream(filePath)) {
+            outputStream.write(json.getBytes(StandardCharsets.UTF_8));
+        }
+
+        // Load the game state from the file
         GameSaverLoader.GameState loadedGame = gameSaverLoader.loadGame();
 
+        // Assertions to verify the loaded game state
         assertNotNull(loadedGame);
         assertArrayEquals(new int[]{0, 0}, loadedGame.getKingPosition());
         assertArrayEquals(new int[]{1, 1}, loadedGame.getKnightPosition());

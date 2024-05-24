@@ -5,8 +5,11 @@ import org.tinylog.Logger;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.List;
  * This class uses the Gson library for JSON serialization and deserialization.
  */
 public class GameSaverLoader {
-    private static final String FILE_PATH = "/gameState.json";
+    private static final String FILE_PATH = "gameState.json";
     private static final Gson gson = new Gson();
 
     /**
@@ -31,8 +34,11 @@ public class GameSaverLoader {
         GameState gameData = new GameState(kingPosition, knightPosition, goalPosition, moveCount);
         String json = gson.toJson(gameData);
 
-        try {
-            Files.write(Paths.get(getClass().getResource(FILE_PATH).toURI()), json.getBytes());
+        Path path = Paths.get(FILE_PATH);
+        try (OutputStream outputStream = Files.newOutputStream(path);
+             OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
+            writer.write(json);
+            Logger.info("Game saved successfully.");
         } catch (Exception e) {
             e.printStackTrace();
             Logger.error("Error while saving game: " + e);
@@ -45,7 +51,8 @@ public class GameSaverLoader {
      * @return GameState object if successful, null if an error occurs during file reading or JSON parsing.
      */
     public GameState loadGame() {
-        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+        Path path = Paths.get(FILE_PATH);
+        try (InputStream inputStream = Files.newInputStream(path);
              InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
             GameState gameState = gson.fromJson(reader, GameState.class);
