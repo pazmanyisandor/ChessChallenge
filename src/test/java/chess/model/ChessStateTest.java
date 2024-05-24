@@ -17,6 +17,41 @@ class ChessStateTest {
     }
 
     @Test
+    void testGetKingX() {
+        assertEquals(2, state.getKingX());
+    }
+
+    @Test
+    void testGetKingY() {
+        assertEquals(1, state.getKingY());
+    }
+
+    @Test
+    void testGetKnightX() {
+        assertEquals(2, state.getKnightX());
+    }
+
+    @Test
+    void testGetKnightY() {
+        assertEquals(2, state.getKnightY());
+    }
+
+    @Test
+    void testGetGoalX() {
+        assertEquals(0, state.getGoalX());
+    }
+
+    @Test
+    void testGetGoalY() {
+        assertEquals(6, state.getGoalY());
+    }
+
+    @Test
+    void testGetMoveCount() {
+        assertEquals(0, state.getMoveCount());
+    }
+
+    @Test
     void testIsAttackedByKing() {
         ChessState attackingState = new ChessState(2, 2, 3, 3, 0);
         assertTrue(attackingState.isLegalToMoveFrom("Knight"));
@@ -61,13 +96,13 @@ class ChessStateTest {
         // Making a legal King move
         TwoPhaseMove<String> kingMove = new TwoPhaseMove<>("King", "King 3 1");
         state.makeMove(kingMove);
-        assertEquals(new ChessState(3, 1, 2, 2, 0), state);
+        assertEquals(new ChessState(3, 1, 2, 2, 1), state);
 
         // Making a legal Knight move
-        state = new ChessState(1, 0, 2, 2, 0);
+        state = new ChessState(1, 0, 2, 2, 1);
         TwoPhaseMove<String> knightMove = new TwoPhaseMove<>("Knight", "Knight 4 3");
         state.makeMove(knightMove);
-        assertEquals(new ChessState(1, 0, 4, 3, 0), state);
+        assertEquals(new ChessState(1, 0, 4, 3, 2), state);
     }
 
     @Test
