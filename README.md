@@ -21,11 +21,13 @@ The core parts of the software are the 'ChessState.java' file, which models the 
 
 ## Possible Solution
 START   King: (2, 1) | Knight: (2, 2) | Goal: (0, 6)
-        King: (2, 1) | Knight: (1, 0) | Goal: (0, 6) | **Move: Knight(-1, -2)**
-        King: (2, 1) | Knight: (0, 2) | Goal: (0, 6) | **Move: Knight(-1,  2)**
-        King: (1, 2) | Knight: (0, 2) | Goal: (0, 6) | **Move: King  (-1,  1)**
-        King: (1, 2) | Knight: (2, 1) | Goal: (0, 6) | **Move: Knight( 2, -1)**
-        King: (1, 2) | Knight: (3, 3) | Goal: (0, 6) | **Move: Knight( 1,  2)**
-        King: (2, 3) | Knight: (3, 3) | Goal: (0, 6) | **Move: King  ( 1,  1)**
-        King: (2, 3) | Knight: (1, 4) | Goal: (0, 6) | **Move: Knight(-2,  1)**
-SOLVED  King: (2, 3) | Knight: (0, 6) | Goal: (0, 6) | **Move: Knight(-1,  2)**
+1. King: (2, 1) | Knight: (1, 0) | Goal: (0, 6) | **Move: Knight(-1, -2)**
+2. King: (2, 1) | Knight: (0, 2) | Goal: (0, 6) | **Move: Knight(-1,  2)**
+3. King: (1, 2) | Knight: (0, 2) | Goal: (0, 6) | **Move: King  (-1,  1)**
+4. King: (1, 2) | Knight: (2, 1) | Goal: (0, 6) | **Move: Knight( 2, -1)**
+5. King: (1, 2) | Knight: (3, 3) | Goal: (0, 6) | **Move: Knight( 1,  2)**
+6. King: (2, 3) | Knight: (3, 3) | Gaal: (0, 6) | **Move: King  ( 1,  1)**
+7. King: (2, 3) | Knight: (1, 4) | Goal: (0, 6) | **Move: Knight(-2,  1)**
+8. King: (2, 3) | Knight: (0, 6) | Goal: (0, 6) | **Move: Knight(-1,  2)**
+
+SOLVED  
