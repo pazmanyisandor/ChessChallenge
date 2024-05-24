@@ -19,7 +19,7 @@ import java.util.List;
  * This class uses the Gson library for JSON serialization and deserialization.
  */
 public class GameSaverLoader {
-    private static final String FILE_PATH = "gameState.json";
+    public static String FILE_PATH = "gameState.json";
     private static final Gson gson = new Gson();
 
     /**
