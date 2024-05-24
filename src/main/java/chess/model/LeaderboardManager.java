@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.tinylog.Logger;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -16,55 +18,53 @@ import java.util.Date;
  * It provides functionality to read, write, and update leaderboard data in JSON format.
  */
 public class LeaderboardManager {
-    private String filePath;
+    private static final String FILE_PATH = "/leaderboard.json";
     private static final Gson gson = new Gson();
 
     /**
-     * Constructs a LeaderboardManager with the specified file path for the leaderboard data.
-     * Ensures that the leaderboard file exists or creates a new one if it doesn't.
-     * @param filePath the file path where leaderboard data is stored
+     * Constructs a LeaderboardManager that ensures the leaderboard file exists in the resource directory.
      */
-    public LeaderboardManager(String filePath) {
-        this.filePath = filePath;
+    public LeaderboardManager() {
         ensureFileExists();
     }
 
     private void ensureFileExists() {
-        File file = new File(filePath);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                writeLeaderboard(new JsonObject());
-            } catch (IOException e) {
-                e.printStackTrace();
-                Logger.error("Failed to ensure that the Leaderboard file exists: " + e);
+        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH)) {
+            if (inputStream == null) {
+                JsonObject emptyLeaderboard = new JsonObject();
+                writeLeaderboard(emptyLeaderboard);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.error("Failed to ensure that the Leaderboard file exists: " + e);
         }
     }
 
     /**
-     * Reads the leaderboard data from the file and returns it as a {link JsonObject}.
-     * @return JsonObject containing the leaderboard data
+     * Reads the leaderboard data from the resource file and returns it as a JsonObject.
+     * @return JsonObject containing the leaderboard data, or an empty JsonObject if an error occurs
      */
     public JsonObject readLeaderboard() {
-        try {
-            String content = new String(Files.readAllBytes(Paths.get(filePath)));
-            return gson.fromJson(content, JsonObject.class);
-        } catch (IOException e) {
+        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+            return gson.fromJson(reader, JsonObject.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.error("Failed to read Leaderboard data: " + e);
             return new JsonObject();
         }
     }
 
     /**
-     * Writes the provided JSON object containing leaderboard data to the specified file.
+     * Writes the provided JSON object containing leaderboard data to the resource file.
      * This method serializes the JsonObject to a JSON string and writes it to the disk.
      * If an error occurs during writing, it logs the error message.
      * @param jsonObj the JsonObject to be written to the file
      */
     public void writeLeaderboard(JsonObject jsonObj) {
-        try {
-            Files.write(Paths.get(filePath), gson.toJson(jsonObj).getBytes());
-        } catch (IOException e) {
+        try (OutputStream outputStream = Files.newOutputStream(Paths.get(getClass().getResource(FILE_PATH).toURI()))) {
+            outputStream.write(gson.toJson(jsonObj).getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.error("Failed to write to Leaderboard: " + e);
         }
@@ -79,6 +79,10 @@ public class LeaderboardManager {
      */
     public void updateLeaderboard(String username, int moveCount) {
         JsonObject leaderboard = readLeaderboard();
+        if (leaderboard == null) {
+            leaderboard = new JsonObject();
+        }
+
         JsonObject userDetails = leaderboard.getAsJsonObject(username);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

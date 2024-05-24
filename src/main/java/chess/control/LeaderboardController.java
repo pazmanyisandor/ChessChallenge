@@ -12,9 +12,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.tinylog.Logger;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Controller class for the Leaderboard UI.
@@ -33,6 +33,7 @@ public class LeaderboardController {
     private TableColumn<LeaderboardEntry, Integer> rankColumn;
 
     private static final Gson gson = new Gson();
+    private static final String FILE_PATH = "/leaderboard.json";
 
     /**
      * Initializes the leaderboard UI.
@@ -53,10 +54,14 @@ public class LeaderboardController {
     }
 
     private void loadLeaderboardData() {
-        String path = "./io_files/leaderboard.json";
-        try {
-            String content = new String(Files.readAllBytes(Paths.get(path)));
-            JsonObject jsonObj = gson.fromJson(content, JsonObject.class);
+        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+
+            JsonObject jsonObj = gson.fromJson(reader, JsonObject.class);
+            if (jsonObj == null) {
+                jsonObj = new JsonObject();
+            }
+
             ObservableList<LeaderboardEntry> data = FXCollections.observableArrayList();
 
             jsonObj.entrySet().forEach(entry -> {
@@ -73,9 +78,8 @@ public class LeaderboardController {
             tableView.setItems(data);
 
             Logger.info("Leaderboard data loaded.");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-
             Logger.error("Failed to load Leaderboard data, error: " + e);
         }
     }
