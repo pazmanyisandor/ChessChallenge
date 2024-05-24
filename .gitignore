@@ -44,3 +44,4 @@ build/
 /logs
 leaderboard.json
 gameState.json
+dependency-reduced-pom.xml
