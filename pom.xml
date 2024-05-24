@@ -8,6 +8,27 @@
     <artifactId>ChessSoftware</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- Developers information -->
+    <developers>
+        <developer>
+            <id>ps2004</id>
+            <name>Sandor Pazmanyi</name>
+            <organization>Faculty of Informatics, University of Debrecen</organization>
+            <organizationUrl>https://www.inf.unideb.hu/</organizationUrl>
+            <roles>
+                <role>student</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- Project description -->
+    <description>
+        This project was made by Sandor Pazmanyi, as an Assignment for the Software Development class in the University of Debrecen.
+        The project is a simple Chess challenge. The player needs to move one of the pieces to the goal (marked by flag).
+        The software can save and load games, show who solved it with the lowest number of moves.
+        The possible moves will also be highlighted when the User clicks a piece.
+    </description>
+
     <!-- Project properties -->
     <properties>
         <!-- Encoding settings -->
