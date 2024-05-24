@@ -27,6 +27,10 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Controller class for the Chess game UI.
+ * Handles the user interactions and game logic.
+ */
 public class ChessController {
 
     @FXML

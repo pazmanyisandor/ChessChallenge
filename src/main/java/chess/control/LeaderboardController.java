@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Controller class for the Leaderboard UI.
+ * Handles the initialization and data loading for the leaderboard.
+ */
 public class LeaderboardController {
     @FXML
     private TableView<LeaderboardEntry> tableView;
@@ -30,6 +34,10 @@ public class LeaderboardController {
 
     private static final Gson gson = new Gson();
 
+    /**
+     * Initializes the leaderboard UI.
+     * Sets up the table columns and loads the leaderboard data.
+     */
     @FXML
     public void initialize() {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
