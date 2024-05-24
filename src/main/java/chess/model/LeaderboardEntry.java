@@ -1,4 +1,4 @@
-package chess.leaderboard;
+package chess.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

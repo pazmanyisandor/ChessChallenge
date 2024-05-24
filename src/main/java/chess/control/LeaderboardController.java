@@ -1,5 +1,6 @@
-package chess.leaderboard;
+package chess.control;
 
+import chess.model.LeaderboardEntry;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javafx.beans.property.ReadOnlyObjectWrapper;

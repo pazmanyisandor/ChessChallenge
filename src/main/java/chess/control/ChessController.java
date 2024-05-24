@@ -2,7 +2,7 @@ package chess.control;
 
 import chess.model.ChessState;
 import chess.model.GameSaverLoader;
-import chess.leaderboard.LeaderboardManager;
+import chess.model.LeaderboardManager;
 import org.tinylog.Logger;
 import puzzle.TwoPhaseMoveState;
 import javafx.fxml.FXML;
@@ -211,8 +211,6 @@ public class ChessController {
                 squares[i][j].getChildren().clear();
             }
         }
-
-        Logger.info("Board cleared.");
     }
 
     private void highlightMoves(String piece) {
