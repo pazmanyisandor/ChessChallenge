@@ -24,6 +24,7 @@ import javafx.geometry.Insets;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Set;
 
 public class ChessController {
@@ -49,12 +50,12 @@ public class ChessController {
     private String selectedPiece = null;
 
     private final Pane[][] squares = new Pane[8][8];
-    private final Image kingImage = new Image(getClass().getResourceAsStream("/king.png"));
-    private final Image knightImage = new Image(getClass().getResourceAsStream("/knight.png"));
-    private final Image goalImage = new Image(getClass().getResourceAsStream("/goal.png"));
+    private final Image kingImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/king.png")));
+    private final Image knightImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/knight.png")));
+    private final Image goalImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/goal.png")));
 
-    private LeaderboardManager leaderboardManager = new LeaderboardManager("./leaderboard.json");
-    private GameSaverLoader gameSaverLoader = new GameSaverLoader("./gameState.json");
+    private final LeaderboardManager leaderboardManager = new LeaderboardManager("./io_files/leaderboard.json");
+    private final GameSaverLoader gameSaverLoader = new GameSaverLoader("./io_files/gameState.json");
 
     @FXML
     private void initialize() {
