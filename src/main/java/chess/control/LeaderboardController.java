@@ -15,6 +15,9 @@ import org.tinylog.Logger;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Controller class for the Leaderboard UI.
@@ -33,7 +36,7 @@ public class LeaderboardController {
     private TableColumn<LeaderboardEntry, Integer> rankColumn;
 
     private static final Gson gson = new Gson();
-    private static final String FILE_PATH = "/leaderboard.json";
+    private static final String FILE_PATH = "leaderboard.json";
 
     /**
      * Initializes the leaderboard UI.
@@ -54,7 +57,8 @@ public class LeaderboardController {
     }
 
     private void loadLeaderboardData() {
-        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+        Path path = Paths.get(FILE_PATH);
+        try (InputStream inputStream = Files.newInputStream(path);
              InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
             JsonObject jsonObj = gson.fromJson(reader, JsonObject.class);

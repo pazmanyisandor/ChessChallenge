@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.Date;
  * It provides functionality to read, write, and update leaderboard data in JSON format.
  */
 public class LeaderboardManager {
-    private static final String FILE_PATH = "/leaderboard.json";
+    private static final String FILE_PATH = "leaderboard.json";
     private static final Gson gson = new Gson();
 
     /**
@@ -29,14 +30,16 @@ public class LeaderboardManager {
     }
 
     private void ensureFileExists() {
-        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH)) {
-            if (inputStream == null) {
+        Path path = Paths.get(FILE_PATH);
+        if (!Files.exists(path)) {
+            try (OutputStream outputStream = Files.newOutputStream(path)) {
                 JsonObject emptyLeaderboard = new JsonObject();
-                writeLeaderboard(emptyLeaderboard);
+                outputStream.write(gson.toJson(emptyLeaderboard).getBytes(StandardCharsets.UTF_8));
+                Logger.info("Created new leaderboard file.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Logger.error("Failed to ensure that the Leaderboard file exists: " + e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.error("Failed to ensure that the Leaderboard file exists: " + e);
         }
     }
 
@@ -45,7 +48,8 @@ public class LeaderboardManager {
      * @return JsonObject containing the leaderboard data, or an empty JsonObject if an error occurs
      */
     public JsonObject readLeaderboard() {
-        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+        Path path = Paths.get(FILE_PATH);
+        try (InputStream inputStream = Files.newInputStream(path);
              InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
             return gson.fromJson(reader, JsonObject.class);
         } catch (Exception e) {
@@ -62,7 +66,8 @@ public class LeaderboardManager {
      * @param jsonObj the JsonObject to be written to the file
      */
     public void writeLeaderboard(JsonObject jsonObj) {
-        try (OutputStream outputStream = Files.newOutputStream(Paths.get(getClass().getResource(FILE_PATH).toURI()))) {
+        Path path = Paths.get(FILE_PATH);
+        try (OutputStream outputStream = Files.newOutputStream(path)) {
             outputStream.write(gson.toJson(jsonObj).getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
