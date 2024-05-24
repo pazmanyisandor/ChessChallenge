@@ -60,6 +60,7 @@ public class ChessController {
     @FXML
     private void initialize() {
         initializeBoard();
+        labelScoreNum.setText(String.valueOf(0));
 
         buttonStartGame.setDisable(true);
         buttonSaveGame.setDisable(true);
@@ -134,6 +135,7 @@ public class ChessController {
         chessState = new ChessState(2, 1, 2, 2, 0);
         updateView();
         labelMessage.setText("Game Started!");
+        labelScoreNum.setText(String.valueOf(chessState.getMoveCount()));
     }
 
     private void handleLoadGame() {
@@ -149,6 +151,8 @@ public class ChessController {
         } else {
             labelMessage.setText("Failed to load game.");
         }
+
+        labelScoreNum.setText(String.valueOf(chessState.getMoveCount()));
     }
 
     private void handleSaveGame() {
