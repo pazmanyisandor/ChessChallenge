@@ -21,6 +21,7 @@ The core parts of the software are the 'ChessState.java' file, which models the 
 
 ## Possible Solution
 START   King: (2, 1) | Knight: (2, 2) | Goal: (0, 6)
+
 1. King: (2, 1) | Knight: (1, 0) | Goal: (0, 6) | **Move: Knight(-1, -2)**
 2. King: (2, 1) | Knight: (0, 2) | Goal: (0, 6) | **Move: Knight(-1,  2)**
 3. King: (1, 2) | Knight: (0, 2) | Goal: (0, 6) | **Move: King  (-1,  1)**
