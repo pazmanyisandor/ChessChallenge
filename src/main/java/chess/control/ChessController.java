@@ -59,7 +59,7 @@ public class ChessController {
     private final Image goalImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/goal.png")));
 
     private final LeaderboardManager leaderboardManager = new LeaderboardManager("./io_files/leaderboard.json");
-    private final GameSaverLoader gameSaverLoader = new GameSaverLoader("./io_files/gameState.json");
+    private final GameSaverLoader gameSaverLoader = new GameSaverLoader();
 
     @FXML
     private void initialize() {

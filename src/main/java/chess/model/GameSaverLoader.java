@@ -3,7 +3,9 @@ package chess.model;
 import com.google.gson.Gson;
 import org.tinylog.Logger;
 
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -14,16 +16,8 @@ import java.util.List;
  * This class uses the Gson library for JSON serialization and deserialization.
  */
 public class GameSaverLoader {
-    private String filePath;
+    private static final String FILE_PATH = "/gameState.json";
     private static final Gson gson = new Gson();
-
-    /**
-     * Constructor that initializes a new GameSaverLoader with a specific file path for saving or loading game data.
-     * @param filePath the path to the file where game data is stored.
-     */
-    public GameSaverLoader(String filePath) {
-        this.filePath = filePath;
-    }
 
     /**
      * Saves the current game state to a JSON file.
@@ -38,8 +32,8 @@ public class GameSaverLoader {
         String json = gson.toJson(gameData);
 
         try {
-            Files.write(Paths.get(filePath), json.getBytes());
-        } catch (IOException e) {
+            Files.write(Paths.get(getClass().getResource(FILE_PATH).toURI()), json.getBytes());
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.error("Error while saving game: " + e);
         }
@@ -47,14 +41,17 @@ public class GameSaverLoader {
 
     /**
      * Loads a game state from a JSON file.
-     * Reads the game data file specified by `filePath` and converts it back into a GameState object.
+     * Reads the game data file specified by `FILE_PATH` and converts it back into a GameState object.
      * @return GameState object if successful, null if an error occurs during file reading or JSON parsing.
      */
     public GameState loadGame() {
-        try {
-            String content = new String(Files.readAllBytes(Paths.get(filePath)));
-            return gson.fromJson(content, GameState.class);
-        } catch (IOException e) {
+        try (InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+
+            GameState gameState = gson.fromJson(reader, GameState.class);
+            Logger.info("Game loaded successfully.");
+            return gameState;
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.error("Error while loading game: " + e);
             return null;
