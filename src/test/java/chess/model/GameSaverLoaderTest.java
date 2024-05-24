@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,12 +17,10 @@ public class GameSaverLoaderTest {
     @TempDir
     Path tempDir;
     private GameSaverLoader gameSaverLoader;
-    private String filePath;
 
     @BeforeEach
     void setup() {
-        filePath = tempDir.resolve("game.json").toString();
-        gameSaverLoader = new GameSaverLoader(filePath);
+        gameSaverLoader = new GameSaverLoader();
     }
 
     @Test
@@ -32,8 +32,14 @@ public class GameSaverLoaderTest {
 
         gameSaverLoader.saveGame(kingPosition, knightPosition, goalPosition, moveCount);
 
-        assertTrue(Files.exists(Paths.get(filePath)));
-        String content = new String(Files.readAllBytes(Paths.get(filePath)));
+        Path filePath = null;
+        try {
+            filePath = Paths.get(getClass().getResource("/gameState.json").toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        assertTrue(Files.exists(filePath));
+        String content = new String(Files.readAllBytes(filePath));
         assertNotNull(content);
         assertTrue(content.contains("\"moveCount\":10"));
     }
@@ -41,7 +47,13 @@ public class GameSaverLoaderTest {
     @Test
     public void testLoadGame() throws IOException {
         String json = "{\"kingPosition\":[0,0],\"knightPosition\":[1,1],\"goalPosition\":[7,7],\"moveCount\":10}";
-        Files.write(Paths.get(filePath), json.getBytes());
+        Path filePath = null;
+        try {
+            filePath = Paths.get(getClass().getResource("/gameState.json").toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        Files.write(filePath, json.getBytes());
 
         GameSaverLoader.GameState loadedGame = gameSaverLoader.loadGame();
 
@@ -50,13 +62,6 @@ public class GameSaverLoaderTest {
         assertArrayEquals(new int[]{1, 1}, loadedGame.getKnightPosition());
         assertArrayEquals(new int[]{7, 7}, loadedGame.getGoalPosition());
         assertEquals(10, loadedGame.getMoveCount());
-    }
-
-    @Test
-    public void testLoadGameWithIOException() {
-        String invalidPath = tempDir.resolve("nonexistent.json").toString();
-        GameSaverLoader faultyLoader = new GameSaverLoader(invalidPath);
-        assertNull(faultyLoader.loadGame());
     }
 
     @Test
