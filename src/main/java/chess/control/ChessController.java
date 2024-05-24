@@ -1,8 +1,14 @@
 package chess.control;
 
 import chess.model.ChessState;
+import chess.model.GameSaverLoader;
+import chess.leaderboard.LeaderboardManager;
+import org.tinylog.Logger;
 import puzzle.TwoPhaseMoveState;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,8 +21,9 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.geometry.Insets;
-import puzzle.TwoPhaseMoveState;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Set;
 
 public class ChessController {
@@ -46,9 +53,24 @@ public class ChessController {
     private final Image knightImage = new Image(getClass().getResourceAsStream("/knight.png"));
     private final Image goalImage = new Image(getClass().getResourceAsStream("/goal.png"));
 
+    private LeaderboardManager leaderboardManager = new LeaderboardManager("./leaderboard.json");
+    private GameSaverLoader gameSaverLoader = new GameSaverLoader("./gameState.json");
+
     @FXML
     private void initialize() {
         initializeBoard();
+
+        buttonStartGame.setDisable(true);
+        buttonSaveGame.setDisable(true);
+        buttonLoadGame.setDisable(true);
+
+        textFieldUserName.textProperty().addListener((observable, oldValue, newValue) -> {
+            boolean isDisabled = newValue.trim().isEmpty();
+            buttonStartGame.setDisable(isDisabled);
+            buttonSaveGame.setDisable(isDisabled);
+            buttonLoadGame.setDisable(isDisabled);
+        });
+
         buttonStartGame.setOnAction(e -> startGame());
         buttonLoadGame.setOnAction(e -> handleLoadGame());
         buttonSaveGame.setOnAction(e -> handleSaveGame());
@@ -95,6 +117,11 @@ public class ChessController {
                 movePiece(selectedPiece, row, col);
                 selectedPiece = null;
                 updateView();
+                if (chessState.isSolved()) {
+                    labelMessage.setText("YOU WON!");
+                    String username = textFieldUserName.getText();
+                    leaderboardManager.updateLeaderboard(username, chessState.getMoveCount());
+                }
             } else {
                 selectedPiece = null;
                 clearHighlights();
@@ -103,21 +130,48 @@ public class ChessController {
     }
 
     private void startGame() {
-        chessState = new ChessState(2, 1, 2, 2);
+        chessState = new ChessState(2, 1, 2, 2, 0);
         updateView();
         labelMessage.setText("Game Started!");
     }
 
     private void handleLoadGame() {
-        // Implement the load game logic
+        GameSaverLoader.GameState gameState = gameSaverLoader.loadGame();
+        if (gameState != null) {
+            chessState = new ChessState(
+                    gameState.getKingPosition()[0], gameState.getKingPosition()[1],
+                    gameState.getKnightPosition()[0], gameState.getKnightPosition()[1],
+                    gameState.getMoveCount()
+            );
+            updateView();
+            labelMessage.setText("Game Loaded!");
+        } else {
+            labelMessage.setText("Failed to load game.");
+        }
     }
 
     private void handleSaveGame() {
-        // Implement the save game logic
+        gameSaverLoader.saveGame(
+                new int[]{chessState.getKingX(), chessState.getKingY()},
+                new int[]{chessState.getKnightX(), chessState.getKnightY()},
+                new int[]{chessState.getGoalX(), chessState.getGoalY()},
+                chessState.getMoveCount()
+        );
+        labelMessage.setText("Game Saved!");
     }
 
     private void showLeaderboard() {
-        // Implement the leaderboard display logic
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/leaderboard.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Leaderboard");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateView() {
@@ -167,5 +221,6 @@ public class ChessController {
     private void movePiece(String piece, int newX, int newY) {
         TwoPhaseMoveState.TwoPhaseMove<String> move = new TwoPhaseMoveState.TwoPhaseMove<>(piece, piece + " " + newX + " " + newY);
         chessState.makeMove(move);
+        labelScoreNum.setText(String.valueOf(chessState.getMoveCount()));
     }
 }
