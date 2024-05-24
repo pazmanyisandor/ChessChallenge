@@ -9,6 +9,10 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A class that handles saving and loading the game state of a chess game to and from a JSON file.
+ * This class uses the Gson library for JSON serialization and deserialization.
+ */
 public class GameSaverLoader {
     private String filePath;
     private static final Gson gson = new Gson();
