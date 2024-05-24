@@ -77,6 +77,8 @@ public class ChessController {
         buttonLoadGame.setOnAction(e -> handleLoadGame());
         buttonSaveGame.setOnAction(e -> handleSaveGame());
         buttonLeaderboard.setOnAction(e -> showLeaderboard());
+
+        Logger.info("Chess Game's UI is initialized.");
     }
 
     private void initializeBoard() {
@@ -106,6 +108,8 @@ public class ChessController {
     }
 
     private void handleSquareClick(int row, int col) {
+        Logger.info("Detected click at the " + (row + 1) + "th row's " + (col + 1) + "th column.");
+
         if (selectedPiece == null) {
             if (chessState.isLegalToMoveFrom("King") && row == chessState.getKingX() && col == chessState.getKingY()) {
                 selectedPiece = "King";
@@ -121,6 +125,8 @@ public class ChessController {
                 updateView();
                 if (chessState.isSolved()) {
                     labelMessage.setText("YOU WON!");
+                    Logger.info("Game won by the User.");
+
                     String username = textFieldUserName.getText();
                     leaderboardManager.updateLeaderboard(username, chessState.getMoveCount());
                 }
@@ -136,6 +142,8 @@ public class ChessController {
         updateView();
         labelMessage.setText("Game Started!");
         labelScoreNum.setText(String.valueOf(chessState.getMoveCount()));
+
+        Logger.info("Game started.");
     }
 
     private void handleLoadGame() {
@@ -153,6 +161,7 @@ public class ChessController {
         }
 
         labelScoreNum.setText(String.valueOf(chessState.getMoveCount()));
+        Logger.info("Game loaded.");
     }
 
     private void handleSaveGame() {
@@ -163,6 +172,7 @@ public class ChessController {
                 chessState.getMoveCount()
         );
         labelMessage.setText("Game Saved!");
+        Logger.info("Game saved.");
     }
 
     private void showLeaderboard() {
@@ -176,6 +186,7 @@ public class ChessController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.error("Error while showing Leaderboard: " + e);
         }
     }
 
@@ -200,6 +211,8 @@ public class ChessController {
                 squares[i][j].getChildren().clear();
             }
         }
+
+        Logger.info("Board cleared.");
     }
 
     private void highlightMoves(String piece) {
@@ -227,5 +240,7 @@ public class ChessController {
         TwoPhaseMoveState.TwoPhaseMove<String> move = new TwoPhaseMoveState.TwoPhaseMove<>(piece, piece + " " + newX + " " + newY);
         chessState.makeMove(move);
         labelScoreNum.setText(String.valueOf(chessState.getMoveCount()));
+
+        Logger.info("Piece moved.");
     }
 }
