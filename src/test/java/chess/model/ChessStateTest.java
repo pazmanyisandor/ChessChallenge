@@ -13,12 +13,12 @@ class ChessStateTest {
 
     @BeforeEach
     void setUp() {
-        state = new ChessState(2, 1, 2, 2);
+        state = new ChessState(2, 1, 2, 2, 0);
     }
 
     @Test
     void testIsAttackedByKing() {
-        ChessState attackingState = new ChessState(2, 2, 3, 3);
+        ChessState attackingState = new ChessState(2, 2, 3, 3, 0);
         assertTrue(attackingState.isLegalToMoveFrom("Knight"));
         assertFalse(attackingState.isLegalToMoveFrom("King"));
     }
@@ -29,11 +29,11 @@ class ChessStateTest {
         assertFalse(state.isSolved());
 
         // King at goal position
-        ChessState kingAtGoal = new ChessState(0, 6, 2, 2);
+        ChessState kingAtGoal = new ChessState(0, 6, 2, 2, 0);
         assertTrue(kingAtGoal.isSolved());
 
         // Knight at goal position
-        ChessState knightAtGoal = new ChessState(2, 2, 0, 6);
+        ChessState knightAtGoal = new ChessState(2, 2, 0, 6, 0);
         assertTrue(knightAtGoal.isSolved());
     }
 
@@ -61,13 +61,13 @@ class ChessStateTest {
         // Making a legal King move
         TwoPhaseMove<String> kingMove = new TwoPhaseMove<>("King", "King 3 1");
         state.makeMove(kingMove);
-        assertEquals(new ChessState(3, 1, 2, 2), state);
+        assertEquals(new ChessState(3, 1, 2, 2, 0), state);
 
         // Making a legal Knight move
-        state = new ChessState(1, 0, 2, 2);
+        state = new ChessState(1, 0, 2, 2, 0);
         TwoPhaseMove<String> knightMove = new TwoPhaseMove<>("Knight", "Knight 4 3");
         state.makeMove(knightMove);
-        assertEquals(new ChessState(1, 0, 4, 3), state);
+        assertEquals(new ChessState(1, 0, 4, 3, 0), state);
     }
 
     @Test
@@ -79,16 +79,16 @@ class ChessStateTest {
 
     @Test
     void testEquals() {
-        ChessState sameState = new ChessState(2, 1, 2, 2);
-        ChessState differentState = new ChessState(0, 0, 0, 0);
+        ChessState sameState = new ChessState(2, 1, 2, 2, 0);
+        ChessState differentState = new ChessState(0, 0, 0, 0, 0);
         assertEquals(state, sameState);
         assertNotEquals(state, differentState);
     }
 
     @Test
     void testHashCode() {
-        ChessState sameState = new ChessState(2, 1, 2, 2);
-        ChessState differentState = new ChessState(0, 0, 0, 0);
+        ChessState sameState = new ChessState(2, 1, 2, 2, 0);
+        ChessState differentState = new ChessState(0, 0, 0, 0, 0);
         assertEquals(state.hashCode(), sameState.hashCode());
         assertNotEquals(state.hashCode(), differentState.hashCode());
     }
