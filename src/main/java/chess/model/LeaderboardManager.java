@@ -19,7 +19,11 @@ import java.util.Date;
  * It provides functionality to read, write, and update leaderboard data in JSON format.
  */
 public class LeaderboardManager {
-    private static final String FILE_PATH = "leaderboard.json";
+    /**
+     * The file path where the leaderboard will be saved to and loaded from.
+     * The default path is "leaderboard.json".
+     */
+    public static String FILE_PATH = "leaderboard.json";
     private static final Gson gson = new Gson();
 
     /**
